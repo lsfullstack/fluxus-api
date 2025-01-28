@@ -1,6 +1,7 @@
 import { FastifyInstance } from 'fastify'
 import * as userController from '@/controllers/users'
 import * as authController from '@/controllers/auth'
+import { verifyJwt } from '@/middlewares/verify-jwt'
 
 export const routes = async (app: FastifyInstance) => {
   app.get('/', () => {
@@ -11,6 +12,11 @@ export const routes = async (app: FastifyInstance) => {
   app.register(
     async (userRoutes) => {
       userRoutes.post('/', userController.createUserController)
+      userRoutes.get(
+        '/profile',
+        { onRequest: [verifyJwt] },
+        userController.profileUserController,
+      )
     },
     { prefix: 'users' },
   )
