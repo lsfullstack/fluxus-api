@@ -11,12 +11,12 @@ export const routes = async (app: FastifyInstance) => {
   // Users routes
   app.register(
     async (userRoutes) => {
-      userRoutes.post('/', userController.createUserController)
       userRoutes.get(
         '/profile',
         { onRequest: [verifyJwt] },
         userController.profileUserController,
       )
+      userRoutes.post('/', userController.createUserController)
     },
     { prefix: 'users' },
   )
